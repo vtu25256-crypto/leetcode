@@ -1,22 +1,16 @@
 class Solution {
-    int count = 0, ans = 0;
+    int k, ans;
 
     public int kthSmallest(TreeNode root, int k) {
-        inorder(root, k);
+        this.k = k;
+        inorder(root);
         return ans;
     }
 
-    void inorder(TreeNode root, int k) {
-        if (root == null) return;
-
-        inorder(root.left, k);
-
-        count++;
-        if (count == k) {
-            ans = root.val;
-            return;
-        }
-
-        inorder(root.right, k);
+    void inorder(TreeNode n) {
+        if (n == null) return;
+        inorder(n.left);
+        if (--k == 0) { ans = n.val; return; }
+        inorder(n.right);
     }
 }
