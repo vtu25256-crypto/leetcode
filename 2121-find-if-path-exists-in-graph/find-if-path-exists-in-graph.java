@@ -1,27 +1,15 @@
-import java.util.*;
-
 class Solution {
-    public boolean validPath(int n, int[][] edges, int source, int destination) {
-        List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-        for (int[] e : edges) {
-            graph.get(e[0]).add(e[1]);
-            graph.get(e[1]).add(e[0]);
-        }
+    public boolean validPath(int n, int[][] edges, int s, int d) {
+        int[] p = new int[n];
+        for (int i = 0; i < n; i++) p[i] = i;
 
-        boolean[] visited = new boolean[n];
-        return dfs(graph, source, destination, visited);
+        for (int[] e : edges)
+            p[find(p, e[0])] = find(p, e[1]);
+
+        return find(p, s) == find(p, d);
     }
 
-    private boolean dfs(List<List<Integer>> graph, int node, int dest, boolean[] visited) {
-        if (node == dest) return true;
-        visited[node] = true;
-
-        for (int nei : graph.get(node)) {
-            if (!visited[nei] && dfs(graph, nei, dest, visited)) {
-                return true;
-            }
-        }
-        return false;
+    private int find(int[] p, int x) {
+        return p[x] == x ? x : (p[x] = find(p, p[x]));
     }
 }
